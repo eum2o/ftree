@@ -9,6 +9,7 @@ authors = ["eum2o <msc-gh.eum2o@aleeas.com>"]
 repository = "https://github.com/eum2o/ftree"
 categories = ["command-line-utilities", "development-tools::cargo-plugins"]
 readme = "README.md"
+exclude = ["output/"]
 
 [[bin]]
 name = "ftree"
