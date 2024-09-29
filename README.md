@@ -1,6 +1,6 @@
-![GitHub](https://img.shields.io/github/license/eum2o/ftree)
-![Crates.io Version](https://img.shields.io/crates/v/e2o-ftree)
-![GitHub Release](https://img.shields.io/github/v/release/eum2o/ftree?label=latest%20pre-build)
+[![Build status](https://img.shields.io/github/actions/workflow/status/eum2o/ftree/rust.yml?branch=master)](https://github.com/eum2o/ftree/actions)
+[![Latest version](https://img.shields.io/crates/v/e2o-ftree.svg)](https://crates.io/crates/e2o-ftree)
+![License](https://img.shields.io/crates/l/e2o-ftree.svg)
 
 # ftree
 
