@@ -22,12 +22,12 @@ use std::rc::Rc;
 pub(crate) fn traverse_fs(path: &str, item: &Rc<TreeItemRefCell>) {
     match fs::read_dir(path) {
         Ok(dir) => {
-            let dir_entries: Vec<_> = dir.collect::<Result<_, _>>().unwrap();
+            let dir_entries: Vec<_> = dir.collect::<Result<_, _>>().expect("Unable to read files");
             let num_entries = dir_entries.len();
             for (i, dir_entry) in dir_entries.into_iter().enumerate() {
                 let is_last = i == num_entries - 1;
-                let is_dir = dir_entry.metadata().unwrap().is_dir();
-                let text: String = dir_entry.file_name().to_str().unwrap().to_string();
+                let is_dir = dir_entry.metadata().expect("Unable to read metadata").is_dir();
+                let text: String = dir_entry.file_name().to_str().expect("Unable to read the file name").to_string();
                 let child_node = TreeItem::new(item, text.clone(), is_dir, is_last);
                 if is_dir {
                     let new_path = format!("{}/{}", &path, &text);
