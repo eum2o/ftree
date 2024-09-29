@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::fmt::{Display, Formatter};
 use std::fs;
-use std::ops::{Deref, Index};
+use std::ops::Deref;
 use std::rc::{Rc, Weak};
 
 const EXEC_NAME: &str = "ftree";
@@ -66,7 +66,7 @@ impl TreeItem {
     /// └── meta.data
     /// ```
     ///
-    fn to_row_str(&self, prefix_self: bool) {
+    fn to_row_str(&self, prefix_self: bool) -> String {
         let mut mut_symbols: Vec<String> = Vec::new();
 
         let prefix = if prefix_self {
@@ -78,11 +78,13 @@ impl TreeItem {
             String::new()
         };
 
-        println!("{}{}{}", prefix, self.text, if self.is_dir { "/" } else { "" });
+        let mut rows: Vec<String> = Vec::new();
+        rows.push(format!("{}{}{}", prefix, self.text, if self.is_dir { "/" } else { "" }));
 
         for child in &self.children {
-            child.borrow().to_row_str(true);
+            rows.push(child.borrow().to_row_str(true));
         }
+        rows.join("\n")
     }
 }
 
@@ -99,7 +101,7 @@ fn to_row_str_rec(symbols: &mut Vec<String>, curr_item: &TreeItem, sent_from_chi
             let parent_ref = parent_strong.borrow();
             let parent = parent_ref.deref();
 
-            if let Some(_) = &parent.parent {
+            if parent.parent.is_some() {
                 to_row_str_rec(symbols, parent, true);
             }
         }
@@ -118,7 +120,7 @@ fn main() {
     let path = read_path_from_args();
     let root = TreeItem::new_top_level(path.clone(), true);
     read_dir_rec(&path, &root);
-    root.borrow().to_row_str(false);
+    println!("{}", root.borrow().to_row_str(false));
 }
 
 fn read_dir_rec(path: &str, item: &Rc<TreeItemRefCell>) {
@@ -153,15 +155,83 @@ fn read_path_from_args() -> String {
 
 #[cfg(test)]
 mod tests {
-    #[test]
-    fn test_add() {
-        let exp = "./";
+    use super::*;
 
-        // todo
-        // let tree = Tree {
-        //
-        // let act = to_tree_str(&tree);
-        //
-        // assert_eq!(&act, &exp);
+    #[test]
+    fn new_top_level() {
+        let root = TreeItem::new_top_level("root".to_string(), true);
+        let root_ref = root.borrow();
+        assert_eq!(root_ref.text, "root");
+        assert!(root_ref.is_dir);
+        assert!(root_ref.is_last);
+        assert!(root_ref.children.is_empty());
+        assert!(root_ref.parent.is_none());
+    }
+
+    #[test]
+    fn new_child() {
+        let root = TreeItem::new_top_level("root".to_string(), true);
+        let child = TreeItem::new(&root, "child".to_string(), false, true);
+
+        let root_ref = root.borrow();
+        assert_eq!(root_ref.children.len(), 1);
+
+        let child_ref = child.borrow();
+        assert_eq!(child_ref.text, "child");
+        assert!(!child_ref.is_dir);
+        assert!(child_ref.is_last);
+        assert!(child_ref.children.is_empty());
+        assert!(child_ref.parent.is_some());
+    }
+
+    #[test]
+    fn to_row_str_single_item() {
+        let root = TreeItem::new_top_level("root".to_string(), true);
+        let result = root.borrow().to_row_str(false);
+        assert_eq!(result, "root/");
+    }
+
+    #[test]
+    fn to_row_str_with_children() {
+        let root = TreeItem::new_top_level("root".to_string(), true);
+        TreeItem::new(&root, "file1.txt".to_string(), false, false);
+        TreeItem::new(&root, "file2.txt".to_string(), false, true);
+
+        let result = root.borrow().to_row_str(false);
+        let expected = "root/\n ├── file1.txt\n └── file2.txt";
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn to_row_str_nested_structure() {
+        let root = TreeItem::new_top_level("root".to_string(), true);
+        let folder = TreeItem::new(&root, "folder".to_string(), true, false);
+        TreeItem::new(&folder, "file_in_folder.txt".to_string(), false, true);
+        TreeItem::new(&root, "file_in_root.txt".to_string(), false, true);
+
+        let result = root.borrow().to_row_str(false);
+        let expected = "root/\n ├── folder/\n │   └── file_in_folder.txt\n └── file_in_root.txt";
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn display() {
+        let item = TreeItem {
+            text: "test".to_string(),
+            is_dir: true,
+            is_last: false,
+            children: Vec::new(),
+            parent: None,
+        };
+        assert_eq!(format!("{}", item), "test/\n");
+
+        let file_item = TreeItem {
+            text: "file.txt".to_string(),
+            is_dir: false,
+            is_last: true,
+            children: Vec::new(),
+            parent: None,
+        };
+        assert_eq!(format!("{}", file_item), "file.txt\n");
     }
 }
