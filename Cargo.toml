@@ -1,6 +1,17 @@
 [package]
-name = "ftree"
-version = "0.1.0"
+version = "1.0.0"
+name = "e2o-ftree"
+description = "A file tree printing command line tool"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+keywords = ["tree", "file", "system", "structure"]
+authors = ["eum2o <msc-gh.eum2o@aleeas.com>"]
+repository = "https://github.com/eum2o/ftree"
+categories = ["command-line-utilities", "development-tools::cargo-plugins"]
+readme = "README.md"
+
+[[bin]]
+name = "ftree"
+path = "src/main.rs"
 
 [dependencies]

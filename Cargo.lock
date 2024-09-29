@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "ftree"
-version = "0.1.0"
+name = "e2o-ftree"
+version = "1.0.0"
