@@ -15,4 +15,5 @@ exclude = ["output/"]
 name = "ftree"
 path = "src/main.rs"
 
-[dependencies]
+[dev-dependencies]
+tempfile = "3.13.0"

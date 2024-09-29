@@ -46,7 +46,10 @@ After installation, you can use the tool by running:
 ftree <path>
 ```
 
-Replace `<path>` with the directory you want to visualize.
+Replace `<path>` with the directory you want to visualize. Examples:
+* `ftree .`
+* `ftree /home/user`
+* `ftree relative/path/to/folder`
 
 ## Found a Bug or Got a Feature Request?
 
