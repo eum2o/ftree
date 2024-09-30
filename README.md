@@ -60,3 +60,7 @@ Replace `<path>` with the directory you want to visualize. Examples:
 
 If you encounter any problems or have any suggestions, please open an issue
 on [ftree/issues](https://github.com/eum2o/ftree/issues).
+
+## Contributing
+
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md).
