@@ -1,8 +1,3 @@
-[![Build status](https://img.shields.io/github/actions/workflow/status/eum2o/ftree/rust.yml?branch=master)](https://github.com/eum2o/ftree/actions)
-[![Latest version](https://img.shields.io/crates/v/e2o-ftree.svg)](https://crates.io/crates/e2o-ftree)
-[![GitHub Release](https://img.shields.io/github/v/release/eum2o/ftree?label=download&link=https%3A%2F%2Fgithub.com%2Feum2o%2Fftree%2Freleases)](https://github.com/eum2o/ftree/releases)
-![Crates.io License](https://img.shields.io/crates/l/e2o-ftree?color=%238b55d7)
-
 # ftree
 
 `ftree` is a simple command-line tool for visualizing directory structures. It creates a tree-like representation of the
@@ -48,13 +43,22 @@ Alternatively, you can download pre-built executables for various platforms from
 After installation, you can use the tool by running:
 
 ```
-ftree <path>
+ftree [OPTIONS] [DIRECTORY]
 ```
 
-Replace `<path>` with the directory you want to visualize. Examples:
-* `ftree .`
-* `ftree /home/user`
-* `ftree relative/path/to/folder`
+### Arguments:
+- `[DIRECTORY]`: The directory to visualize. If not specified, defaults to the current directory.
+
+### Options:
+- `--git`: Exclude git-related files and directories from the output.
+- `-h, --help`: Print help information.
+
+### Examples:
+* `ftree`: Visualize the current directory
+* `ftree /home/user`: Visualize a specific directory
+* `ftree relative/path/to/folder`: Visualize a relative path
+* `ftree --git`: Visualize the current directory, excluding git-related files
+* `ftree --git /home/user`: Visualize a specific directory, excluding git-related files
 
 ## Found a Bug or Got a Feature Request?
 

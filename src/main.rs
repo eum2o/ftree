@@ -6,12 +6,12 @@ use clap::Parser;
 
 #[derive(Parser, Debug)]
 struct Args {
-    /// Enable git functionality
+    /// Exclude git-related files and directories from the output
     #[arg(long)]
     git: bool,
 
-    /// The directory path to operate on
-    #[arg(value_name = "DIRECTORY")]
+    /// The directory to visualize (defaults to current directory if not specified)
+    #[arg(value_name = "DIRECTORY", default_value = ".")]
     directory: PathBuf,
 }
 
