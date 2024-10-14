@@ -36,9 +36,7 @@ pub(crate) fn traverse_fs(path: &str, item: &Rc<TreeItemRefCell>, git: bool) {
     match fs::read_dir(path) {
         Ok(dir) => {
             let dir_entries: Vec<_> = dir.collect::<Result<_, _>>().expect("Unable to read files");
-            let num_entries = dir_entries.len();
-            for (i, dir_entry) in dir_entries.into_iter().enumerate() {
-                let is_last = i == num_entries - 1;
+            for dir_entry in dir_entries.into_iter() {
                 let is_dir = dir_entry.metadata().expect("Unable to read metadata").is_dir();
                 let file_name = dir_entry.file_name();
                 let file_name_str = file_name.to_str().expect("Unable to read the file name");
@@ -59,7 +57,7 @@ pub(crate) fn traverse_fs(path: &str, item: &Rc<TreeItemRefCell>, git: bool) {
                     }
                 }
 
-                let child_node = TreeItem::new(item, file_name_str.to_string(), is_dir, is_last);
+                let child_node = TreeItem::new(item, file_name_str.to_string(), is_dir);
                 
                 // If it's a directory, recursively traverse it
                 if is_dir {
