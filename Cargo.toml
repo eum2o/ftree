@@ -17,3 +17,7 @@ path = "src/main.rs"
 
 [dev-dependencies]
 tempfile = "3.13.0"
+
+[dependencies]
+clap = { version = "4.5.20", features = ["derive"] }
+gitignore = "1.0.8"
