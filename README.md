@@ -1,3 +1,9 @@
+[![Build status](https://img.shields.io/github/actions/workflow/status/eum2o/ftree/rust.yml?branch=master)](https://github.com/eum2o/ftree/actions)
+[![Latest version](https://img.shields.io/crates/v/e2o-ftree.svg)](https://crates.io/crates/e2o-ftree)
+[![GitHub Release](https://img.shields.io/github/v/release/eum2o/ftree?label=download&link=https%3A%2F%2Fgithub.com%2Feum2o%2Fftree%2Freleases)](https://github.com/eum2o/ftree/releases)
+![Crates.io License](https://img.shields.io/crates/l/e2o-ftree?color=%238b55d7)
+
+
 # ftree
 
 `ftree` is a simple command-line tool for visualizing directory structures. It creates a tree-like representation of the
