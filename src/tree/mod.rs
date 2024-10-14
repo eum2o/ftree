@@ -29,16 +29,19 @@ impl TreeItem {
             parent: None,
         }))
     }
-    pub(crate) fn new(parent: &Rc<TreeItemRefCell>, text: String, is_dir: bool, is_last: bool) -> Rc<TreeItemRefCell> {
+    pub(crate) fn new(parent: &Rc<TreeItemRefCell>, text: String, is_dir: bool) -> Rc<TreeItemRefCell> {
         let inst = Self {
             text,
             is_dir,
-            is_last,
+            is_last: true,
             children: Vec::new(),
             parent: Some(Rc::downgrade(parent)),
         };
 
         let r_inst = Rc::new(RefCell::new(inst));
+        if let Some(x) = parent.borrow_mut().children.last_mut() {
+            x.borrow_mut().is_last = false;
+        }
         parent.borrow_mut().children.push(Rc::clone(&r_inst));
 
         r_inst
@@ -114,6 +117,7 @@ impl Display for TreeItem {
     }
 }
 
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -132,7 +136,7 @@ mod tests {
     #[test]
     fn new_child() {
         let root = TreeItem::new_top_level("root".to_string(), true);
-        let child = TreeItem::new(&root, "child".to_string(), false, true);
+        let child = TreeItem::new(&root, "child".to_string(), false);
 
         let root_ref = root.borrow();
         assert_eq!(root_ref.children.len(), 1);
@@ -155,8 +159,8 @@ mod tests {
     #[test]
     fn to_row_str_with_children() {
         let root = TreeItem::new_top_level("root".to_string(), true);
-        TreeItem::new(&root, "file1.txt".to_string(), false, false);
-        TreeItem::new(&root, "file2.txt".to_string(), false, true);
+        TreeItem::new(&root, "file1.txt".to_string(), false);
+        TreeItem::new(&root, "file2.txt".to_string(), false);
 
         let result = root.borrow().to_row_str(false);
         let expected = "root/\n ├── file1.txt\n └── file2.txt";
@@ -166,9 +170,9 @@ mod tests {
     #[test]
     fn to_row_str_nested_structure() {
         let root = TreeItem::new_top_level("root".to_string(), true);
-        let folder = TreeItem::new(&root, "folder".to_string(), true, false);
-        TreeItem::new(&folder, "file_in_folder.txt".to_string(), false, true);
-        TreeItem::new(&root, "file_in_root.txt".to_string(), false, true);
+        let folder = TreeItem::new(&root, "folder".to_string(), true);
+        TreeItem::new(&folder, "file_in_folder.txt".to_string(), false);
+        TreeItem::new(&root, "file_in_root.txt".to_string(), false);
 
         let result = root.borrow().to_row_str(false);
         let expected = "root/\n ├── folder/\n │   └── file_in_folder.txt\n └── file_in_root.txt";
@@ -196,3 +200,4 @@ mod tests {
         assert_eq!(format!("{}", file_item), "file.txt");
     }
 }
+
