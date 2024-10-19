@@ -56,7 +56,7 @@ ftree [OPTIONS] [DIRECTORY]
 - `[DIRECTORY]`: The directory to visualize. If not specified, defaults to the current directory.
 
 ### Options:
-- `--git`: Exclude git-related files and directories from the output.
+- `--gitignore`: Exclude git-related files and directories from the output.
 - `-h, --help`: Print help information.
 
 ### Examples:

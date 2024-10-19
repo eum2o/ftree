@@ -8,7 +8,7 @@ use clap::Parser;
 struct Args {
     /// Exclude git-related files and directories from the output
     #[arg(long)]
-    git: bool,
+    gitignore: bool,
 
     /// The directory to visualize (defaults to current directory if not specified)
     #[arg(value_name = "DIRECTORY", default_value = ".")]
@@ -22,7 +22,7 @@ fn main() {
     let root = TreeItem::new_top_level(path.to_str().unwrap().to_string(), true);
 
     // If --git is passed, use gitignore
-    fs_utils::traverse_fs(path.to_str().unwrap(), &root, args.git);
+    fs_utils::traverse_fs(path.to_str().unwrap(), &root, args.gitignore);
 
     println!("{}", root.borrow().to_row_str(false));
 
